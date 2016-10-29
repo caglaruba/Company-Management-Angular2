@@ -1,0 +1,58 @@
+﻿<div class="col-md-6 offset-3">
+  <h2 style="margin:50px 0px">Email confirmation</h2>
+  <form class="form-horizontal" [formGroup]="userForm">
+    <div class="form-group">
+      <label for="newpassword" class="col-sm-2 control-label">Password</label>
+      <div class="col-sm-10">
+        <input class="form-control" type="password" formControlName="newpassword" name="newpassword" id="newpassword"
+               placeholder="" autocomplete="off">
+        <small *ngIf="!userForm.controls.newpassword.valid" class="text-danger">Password is required</small>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="confirmpassword" class="col-sm-2 control-label">Confirm password</label>
+      <div class="col-sm-10">
+        <input class="form-control" type="password" formControlName="confirmpassword" name="confirmpassword"
+               id="confirmpassword" placeholder="">
+        <small *ngIf="!userForm.controls.confirmpassword.valid" class="text-danger">Confirm password is required</small>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="phonenumber" class="col-sm-2 control-label">Phone</label>
+      <div class="col-sm-10">
+        <input class="form-control" formControlName="phone" name="phone" id="phonenumber" placeholder="">
+        <small *ngIf="!userForm.controls.phone.valid" class="text-danger">Phone is required</small>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-success" [disabled]="!userForm.valid"
+                (click)="onConfirm($event, AuthenticationCodeModal)">Confirm
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<template #AuthenticationCodeModal let-c="close" let-d="dismiss">
+  <form>
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Authentication Code</h5>
+      <button type="button" class="close" aria-label="Close" (click)="d('cancel')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="smsCode">SMS code</label>
+        <input type="text" class="form-control" name="smsCode" [(ngModel)]="model.smsCode"
+               #smsCode="ngModel" id="smsCode" required/>
+      </div>
+
+      <div *ngIf="smsCodeError" class="alert alert-danger">{{ smsCodeError }}</div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="onConfirm($event,'',c)">Send</button>
+    </div>
+  </form>
+</template>

@@ -1,0 +1,12 @@
+﻿<ng-select [allowClear]="false"
+           [items]="items"
+           [active]="getSelectedEntity()"
+           [disabled]="disabled"
+           (data)="refreshValue($event)"
+           placeholder="No entity selected">
+</ng-select>
+
+<div [formGroup]="formGroup" class="form-group row col-sm-5 pt-sm-3" *ngIf="isAmountEnabled">
+  <label class="col-sm-10 pl-0">Amount</label>
+  <input class="form-control" formControlName="amount" />
+</div>

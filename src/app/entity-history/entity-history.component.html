@@ -1,0 +1,221 @@
+﻿<div class="container-fluid">
+
+  <div class="row">
+    <nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
+      <ul class="nav nav-pills flex-column">
+        <li *ngFor="let entity of entities" class="nav-item">
+          <a [routerLink]="['/entity',entity.id,'history', entity.created_at]" (click)="onSelect(entity)"
+             [class.active]="selectedEntity && entity.id === selectedEntity.id && entity.created_at === selectedEntity.created_at" class="nav-link">{{entity.created_at | amFromUnix | amCalendar}}</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="col-sm-9 offset-md-2 offset-sm-3 col-md-10 pt-3" *ngIf="selectedEntity">
+      <h1 class="page-header">{{selectedEntity.created_by}}
+      </h1>
+      <form class="form-horizontal" novalidate [formGroup]="entityForm">
+        <div class="form-group row col-sm-10">
+          <label for="inputCommonName" class="pl-0">Common name</label>
+          <input class="form-control" [(ngModel)]="selectedEntity.common_name" name="name"
+                 id="inputCommonName"
+                 placeholder="Common name"
+                 formControlName="common_name">
+        </div>
+
+        <div class="form-group row col-sm-10">
+          <label for="inputType" class="pl-0">Type</label>
+          <select class="form-control" [(ngModel)]="selectedEntity.type" name="type" id="inputType"
+                  formControlName="type">
+            <option value="person">Natural person</option>
+            <option value="company">Company</option>
+            <option value="target_company">Target company</option>
+          </select>
+        </div>
+
+        <div *ngIf="entityForm.value.type=='person'">
+          <div class="form-group row col-sm-10">
+            <label for="inputGivenName" class="pl-0">Given name</label>
+            <input class="form-control" id="inputGivenName" formControlName="given_name">
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputMiddleName" class="pl-0">Middle name</label>
+            <input class="form-control" id="inputMiddleName" formControlName="middle_name">
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputFamilyName" class="pl-0">Family name</label>
+            <input class="form-control" id="inputFamilyName" formControlName="family_name">
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputNamePrefix" class="pl-0">Name prefix</label>
+            <input class="form-control" id="inputNamePrefix" formControlName="name_prefix">
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputNameSuffix" class="pl-0">Name suffix</label>
+            <input class="form-control" id="inputNameSuffix" formControlName="name_suffix">
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputGender" class="pl-0">Gender</label>
+            <select class="form-control" id="inputGender" formControlName="gender">
+              <option value="male">Male</option>
+              <option value="femail">Female</option>
+              <option value="undefined" selected>Undefined</option>
+            </select>
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputBirthday" class="pl-0">Birthday</label>
+            <input class="form-control" id="inputBirthday" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()" formControlName="birthday">
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputBirthplace" class="pl-0">Birthplace</label>
+            <input class="form-control" id="inputBirthplace" formControlName="birthplace">
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputBirthcountry" class="pl-0">Birthcountry</label>
+            <input class="form-control" id="inputBirthcountry" formControlName="birthcountry">
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputNationality" class="pl-0">Nationality</label>
+            <input class="form-control" id="inputNationality" formControlName="nationality">
+          </div>
+          <address [formGroup]="entityForm.controls.residential_address"
+                   [selected]="entityForm.value.residential_address"
+                   [title]="'Residential address'"
+          ></address>
+
+        </div>
+        <div *ngIf="entityForm.value.type=='company'">
+          <div class="form-group row col-sm-10">
+            <label for="inputKVK" class=" pl-0">KVK</label>
+            <input class="form-control" id="inputKVK" formControlName="kvk">
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputLegalForm" class="col-sm-10 pl-0">Legal form</label>
+            <input class="form-control" id="inputLegalForm" formControlName="legal_form">
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputRegisteredName" class="col-sm-10 pl-0">Registered name</label>
+            <input class="form-control" id="inputRegisteredName" formControlName="registered_name">
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputRegisteredOffice" class="col-sm-10 pl-0">Registered office</label>
+            <input class="form-control" id="inputRegisteredOffice" formControlName="registered_office">
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputDateOfRegistration" class="col-sm-10 pl-0">Date of registration</label>
+            <input class="form-control" id="inputDateOfRegistration" ngbDatepicker #d1="ngbDatepicker" name="b" (click)="d1.toggle()"  formControlName="date_of_registration">
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputDateOfEstablishment" class="col-sm-10 pl-0">Date of establishment</label>
+            <input class="form-control" id="inputDateOfEstablishment" ngbDatepicker #d2="ngbDatepicker" (click)="d2.toggle()" formControlName="date_of_establishment">
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputTradeName" class="col-sm-10 pl-0">Trade name</label>
+            <input class="form-control" id="inputTradeName" formControlName="trade_name">
+          </div>
+          <address [formGroup]="entityForm.controls.visiting_address"
+                   [selected]="entityForm.value.visiting_address"
+                   [title]="'Visiting address'"
+          ></address>
+          <address [formGroup]="entityForm.controls.registered_address"
+                   [selected]="entityForm.value.registered_address"
+                   [title]="'Registered address'"
+          ></address>
+          <div class="form-group row col-sm-10">
+            <label for="inputDirectors" class="col-sm-12 pl-0">Directors</label>
+            <entity-selector class="col-sm-12 pl-0" [formGroup]="entityForm.controls.directors" [type]="'person'" [disabled]="true"></entity-selector>
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputProxyholders" class="col-sm-12 pl-0">Proxyholders</label>
+            <entity-selector class="col-sm-12 pl-0" [formGroup]="entityForm.controls.proxyholders" [type]="'person'" [disabled]="true"></entity-selector>
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputTrustees" class="col-sm-12 pl-0">Trustees</label>
+            <entity-selector class="col-sm-12 pl-0" [formGroup]="entityForm.controls.trustees" [type]="'person'" [disabled]="true"></entity-selector>
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputShareholders" class="col-sm-12 pl-0">Shareholders</label>
+            <entity-selector class="col-sm-12 pl-0" [formGroup]="entityForm.controls.shareholders" [isAmountEnabled]="true" [disabled]="true"></entity-selector>
+          </div>
+
+        </div>
+        <div *ngIf="entityForm.value.type=='target_company'">
+          <div class="form-group row col-sm-10">
+            <label for="inputKVK" class="col-sm-10 pl-0">KVK</label>
+            <input class="form-control" id="inputKVK" formControlName="kvk">
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputRSIN" class="col-sm-10 pl-0">RSIN</label>
+            <input class="form-control" id="inputRSIN" formControlName="rsin">
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputLegalForm" class="col-sm-10 pl-0">Legal form</label>
+            <input class="form-control" id="inputLegalForm" formControlName="legal_form">
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputRegisteredName" class="col-sm-10 pl-0">Registered name</label>
+            <input class="form-control" id="inputRegisteredName" formControlName="registered_name">
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputRegisteredOffice" class="col-sm-10 pl-0">Registered office</label>
+            <input class="form-control" id="inputRegisteredOffice" formControlName="registered_office">
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputDateOfRegistration" class="col-sm-10 pl-0">Date of registration</label>
+            <input class="form-control"  id="inputDateOfRegistration" ngbDatepicker #d1="ngbDatepicker" (click)="d1.toggle()" formControlName="date_of_registration">
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputDateOfEstablishment" class="col-sm-10 pl-0">Date of establishment</label>
+            <input class="form-control" id="inputDateOfEstablishment" ngbDatepicker #d2="ngbDatepicker" (click)="d2.toggle()" formControlName="date_of_establishment">
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputIssuedCapital" class="col-sm-10 pl-0">Issued capital</label>
+            <input class="form-control" id="inputIssuedCapital" formControlName="issued_capital">
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputPaidupCapital" class="col-sm-10 pl-0">Paidup capital</label>
+            <input class="form-control" id="inputPaidupCapital" formControlName="paidup_capital">
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputTradeName" class="col-sm-10 pl-0">Trade name</label>
+            <input class="form-control" id="inputTradeName" formControlName="trade_name">
+          </div>
+          <address [formGroup]="entityForm.controls.visiting_address"
+                   [selected]="entityForm.value.visiting_address"
+                   [title]="'Visiting address'"
+          ></address>
+          <address [formGroup]="entityForm.controls.registered_address"
+                   [selected]="entityForm.value.registered_address"
+                   [title]="'Registered address'"
+          ></address>
+          <div class="form-group row col-sm-10">
+            <label for="inputDirectors" class="col-sm-12 pl-0">Directors</label>
+            <entity-selector class="col-sm-12 pl-0" (valueUpdated)="selected($event)" [formGroup]="entityForm.controls.directors"  [disabled]="true"></entity-selector>
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputProxyholders" class="col-sm-12 pl-0">Proxyholders</label>
+            <entity-selector class="col-sm-12 pl-0" (valueUpdated)="selected($event)" [formGroup]="entityForm.controls.proxyholders"  [disabled]="true"></entity-selector>
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputTrustees" class="col-sm-12 pl-0">Trustees</label>
+            <entity-selector class="col-sm-12 pl-0" (valueUpdated)="selected($event)" [formGroup]="entityForm.controls.trustees"  [disabled]="true"></entity-selector>
+          </div>
+
+          <div class="form-group row col-sm-10">
+            <label for="inputIsBFI" class="col-sm-10 pl-0">Is BFI</label>
+            <input class="form-control" type="checkbox" id="inputIsBFI"
+                   formControlName="is_bfi">
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputBFINumber" class="col-sm-10 pl-0">BFI number</label>
+            <input class="form-control" id="inputBFINumber" formControlName="bfi_number">
+          </div>
+          <div class="form-group row col-sm-10">
+            <label for="inputShareholders" class="col-sm-12 pl-0">Shareholders</label>
+            <entity-selector class="col-sm-12 pl-0" (valueUpdated)="selected($event)" [formGroup]="entityForm.controls.shareholders"   [isAmountEnabled]="true" [disabled]="true"></entity-selector>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

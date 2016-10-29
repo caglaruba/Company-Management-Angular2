@@ -1,0 +1,10 @@
+﻿<ng-select [allowClear]="false"
+           [items]="items"
+           [active]="getSelectedCompany()"
+           [disabled]="disabled"
+           (data)="refreshValue($event)"
+           placeholder="No company selected">
+</ng-select>
+<!--(selected)="selectFunc($event)"-->
+<!--(removed)="removed($event)"-->
+<!--(typed)="typed($event)"-->

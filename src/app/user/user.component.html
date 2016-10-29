@@ -1,0 +1,72 @@
+﻿<div class="container-fluid">
+
+  <div class="row">
+    <nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
+      <ul class="nav nav-pills flex-column">
+        <li *ngFor="let user of users" class="nav-item">
+          <a [routerLink]="['/admin/user',user.id]" (click)="onSelect(user)"
+             [class.active]="selectedUser && user.id === selectedUser.id" class="nav-link">{{user.name}}</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="col-sm-9 offset-md-2 offset-sm-3 col-md-10 pt-3" *ngIf="selectedUser">
+      <h1 class="page-header">{{selectedUser.email}}
+        <button type="submit" class="btn btn-info float-right" (click)="onShowCreate($event)">New user</button>
+      </h1>
+      <form class="form-horizontal" [formGroup]="userForm">
+        <div class="form-group">
+          <label for="inputName" class="col-sm-2 control-label">Name</label>
+          <div class="col-sm-10">
+            <company-selector (valueUpdated)="selected($event)" [selectedCompany]="selectedUser"></company-selector>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputName" class="col-sm-2 control-label">Name</label>
+          <div class="col-sm-10">
+            <input class="form-control" formControlName="name" name="name" id="inputName" placeholder="Name"
+                   [(ngModel)]="selectedUser.name">
+            <small *ngIf="!userForm.controls.name.valid" class="text-danger">Name is required</small>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email" class="col-sm-2 control-label">Email</label>
+          <div class="col-sm-10">
+            <input class="form-control" formControlName="email" name="email" id="email" placeholder="email@tes.com"
+                   [(ngModel)]="selectedUser.email">
+            <small *ngIf="!userForm.controls.email.valid" class="text-danger">Email is required</small>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="phonenumber" class="col-sm-2 control-label">Phone</label>
+          <div class="col-sm-10">
+            <input class="form-control" formControlName="phone" name="phone" id="phonenumber" placeholder=""
+                   [(ngModel)]="selectedUser.phone">
+            <small *ngIf="!userForm.controls.phone.valid" class="text-danger">Phone is required</small>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="is_admin" class="col-sm-2 control-label">Is admin</label>
+          <div class="col-sm-10">
+            <input class="form-control" type="checkbox" formControlName="is_admin" name="is_admin" id="is_admin"
+                   placeholder="" [(ngModel)]="selectedUser.is_admin">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-success" [disabled]="!userForm.valid" (click)="onModify($event)">Save
+            </button>
+            <button type="submit" class="btn btn-danger" [disabled]="!selectedUser.id" (click)="onRemove()"
+                    *ngIf="selectedUser.id != authService.getCurrentUserId()">Delete
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="col-sm-9 offset-md-2 offset-sm-3 col-md-10 pt-3" *ngIf="!selectedUser">
+      <h1 class="page-header">&nbsp;
+        <button type="submit" class="btn btn-info float-right" (click)="onShowCreate($event)">New user</button>
+      </h1>
+    </div>
+
+  </div>
+</div>
